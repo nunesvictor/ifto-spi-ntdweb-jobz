@@ -1,0 +1,30 @@
+[
+  {
+    "model": "core.turno",
+    "pk": 1,
+    "fields": {
+      "descricao": "Matutino"
+    }
+  },
+  {
+    "model": "core.turno",
+    "pk": 2,
+    "fields": {
+      "descricao": "Vespertino"
+    }
+  },
+  {
+    "model": "core.turno",
+    "pk": 3,
+    "fields": {
+      "descricao": "Integral"
+    }
+  },
+  {
+    "model": "core.turno",
+    "pk": 4,
+    "fields": {
+      "descricao": "Noturno"
+    }
+  }
+]

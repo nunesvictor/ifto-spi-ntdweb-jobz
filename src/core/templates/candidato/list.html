@@ -1,0 +1,36 @@
+{% extends 'dashboard.html' %}
+{% load app %}
+{% load humanize %}
+
+{% block content-head %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Candidatos cadastrados</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <a class="btn btn-sm btn-outline-primary" href="{% url 'core:candidato_add' %}" role="button">
+      <span data-feather="plus"></span>
+      Novo candidato
+    </a>
+  </div>
+</div>
+{% endblock content-head %}
+
+{% block content-body %}
+<div class="list-group">
+  {% for candidato in object_list %}
+  <a href="{% url 'core:candidato_edit' candidato.pk %}" class="list-group-item list-group-item-action">
+    <div class="d-flex w-100 justify-content-between mb-2">
+      <h5 class="mb-1">{{ candidato }}</h5>
+      <small>Experiência como: {{ candidato.experienciaprofissional_set.all|values_list:'cargo__descricao'|join:', '}}</small>
+    </div>
+    <p class="mb-1">
+      <span data-feather="phone"></span> {{ candidato.contato.telefone|mask:'phone' }}
+      <span class="mr-2"></span>
+      <span data-feather="mail"></span> {{ candidato.contato.email }}
+    </p>
+    <small>
+      <span data-feather="map-pin"></span> {{ candidato.endereco }}
+    </small>
+  </a>
+  {% endfor %}
+</div>
+{% endblock content-body %}

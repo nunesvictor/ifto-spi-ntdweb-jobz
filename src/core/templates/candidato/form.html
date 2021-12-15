@@ -1,0 +1,90 @@
+{% extends 'dashboard.html' %}
+{% load crispy_forms_tags %}
+
+{% block content-head %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">{{ object.pk|yesno:'Editar,Cadastrar' }} candidato</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <a class="btn btn-sm btn-outline-secondary" href="{% url 'core:candidato_list' %}" role="button">
+      <span data-feather="arrow-left"></span>
+      Voltar para lista de candidatos
+    </a>
+
+    {% if object.pk %}
+    <div class="btn-group ml-2">
+      <a href="{% url 'core:candidato_delete' object.pk %}" class="btn btn-sm btn-outline-danger">
+        <span data-feather="trash-2"></span>
+        Excluir
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock content-head %}
+
+{% block content-body %}
+<section class="mb-3">
+  <form action="" method="post">
+    {% csrf_token %}
+
+    {{ form|crispy }}
+
+    <div id="form_set">
+      {{ experiencias_formset.management_form }}
+      {% for form in experiencias_formset.forms %}
+        <hr />
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Experiência Profissional</h5>
+            {{ form|crispy }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-12 text-right">
+        <button id="add_experiencia" type="button" class="btn btn-secondary">
+          <span data-feather="plus"></span> Experiência Profissional
+        </button>
+      </div>
+    </div>
+
+    <div id="empty_form" style="display:none">
+      <hr />
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Experiência Profissional</h5>
+          {{ experiencias_formset.empty_form|crispy }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-12 text-right">
+        {% if object.pk %}
+        <a href="{% url 'core:candidato_delete' object.pk %}" class="btn btn-danger">
+          <span data-feather="trash-2"></span>
+          Excluir
+        </a>
+        {% endif %}
+        <button class="btn btn-primary" type="submit">
+          <span data-feather="save"></span>
+          Salvar
+        </button>
+      </div>
+    </div>
+  </form>
+</section>
+{% endblock content-body %}
+
+{% block scripts %}
+<script>
+  $('#add_experiencia').click(function () {
+    var form_idx = $('#id_experienciaprofissional_set-TOTAL_FORMS').val();
+
+    $('#form_set').append($('#empty_form').html().replace(/__prefix__/g, form_idx));
+    $('#id_experienciaprofissional_set-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+  });
+</script>
+{% endblock scripts %}

@@ -1,0 +1,17 @@
+[
+  {
+    "model": "core.areaatuacao",
+    "pk": 1,
+    "fields": { "descricao": "Agricultura e Pecuária" }
+  },
+  {
+    "model": "core.areaatuacao",
+    "pk": 2,
+    "fields": { "descricao": "Indústria" }
+  },
+  {
+    "model": "core.areaatuacao",
+    "pk": 3,
+    "fields": { "descricao": "Serviços" }
+  }
+]

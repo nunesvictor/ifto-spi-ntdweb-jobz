@@ -1,0 +1,30 @@
+[
+  {
+    "model": "core.genero",
+    "pk": 1,
+    "fields": {
+      "descricao": "Masculino"
+    }
+  },
+  {
+    "model": "core.genero",
+    "pk": 2,
+    "fields": {
+      "descricao": "Feminino"
+    }
+  },
+  {
+    "model": "core.genero",
+    "pk": 3,
+    "fields": {
+      "descricao": "Não Binário"
+    }
+  },
+  {
+    "model": "core.genero",
+    "pk": 4,
+    "fields": {
+      "descricao": "Não Informado"
+    }
+  }
+]

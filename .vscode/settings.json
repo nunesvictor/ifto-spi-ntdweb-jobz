@@ -1,0 +1,11 @@
+{
+  "python.languageServer": "Pylance",
+  "python.autoComplete.extraPaths": [
+    "${workspaceFolder}/__pypackages__/3.9/lib",
+    "${workspaceFolder}/src"
+  ],
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/__pypackages__/3.9/lib",
+    "${workspaceFolder}/src"
+  ]
+}

@@ -1,0 +1,38 @@
+{% extends 'dashboard.html' %}
+
+{% block content-head %}
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Remover empresa</h1>
+  </div>
+{% endblock content-head %}
+
+{% block content-body %}
+<form action="" method="post">
+  {% csrf_token %}
+
+  <div class="row">
+    <div class="col-md-12">
+      <form action="" method="post">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Peraí um instante...</h5>
+            <p class="card-text">
+              Deseja realmente excluir a empresa <mark>{{ object }}</mark>?
+              <br /><br />
+              Observe que esta ação <strong>não poderá ser desfeita</strong>!
+            </p>
+            <a href="{% url 'core:empresa_edit' object.pk %}" class="btn btn-success">
+              <span data-feather="slash"></span>
+              NÃO, me tira daqui!
+            </a>
+            <button class="btn btn-danger" type="submit">
+              <span data-feather="x-octagon"></span>
+              SIM, quero excluir esse registro!
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</form>
+{% endblock content-body %}

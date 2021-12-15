@@ -1,0 +1,26 @@
+[
+  {
+    "model": "core.cargo",
+    "pk": 1,
+    "fields": {
+      "descricao": "Analista de sistemas",
+      "especificacoes": "Fazer análise de sistemas"
+    }
+  },
+  {
+    "model": "core.cargo",
+    "pk": 2,
+    "fields": {
+      "descricao": "Técnico em informática",
+      "especificacoes": "Consertar computadores"
+    }
+  },
+  {
+    "model": "core.cargo",
+    "pk": 3,
+    "fields": {
+      "descricao": "Assistente administrativo",
+      "especificacoes": "Faz tudo"
+    }
+  }
+]

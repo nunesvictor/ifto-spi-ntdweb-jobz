@@ -1,0 +1,23 @@
+[
+  {
+    "model": "core.formacontratacao",
+    "pk": 1,
+    "fields": {
+      "descricao": "CLT"
+    }
+  },
+  {
+    "model": "core.formacontratacao",
+    "pk": 2,
+    "fields": {
+      "descricao": "PJ"
+    }
+  },
+  {
+    "model": "core.formacontratacao",
+    "pk": 3,
+    "fields": {
+      "descricao": "Temporário"
+    }
+  }
+]

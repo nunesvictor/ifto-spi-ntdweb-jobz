@@ -1,0 +1,35 @@
+{% extends 'dashboard.html' %}
+{% load humanize %}
+
+{% block content-head %}
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Vagas cadastradas</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <a class="btn btn-sm btn-outline-primary" href="{% url 'core:vaga_add' %}" role="button">
+        <span data-feather="plus"></span>
+        Nova vaga
+      </a>
+    </div>
+  </div>
+{% endblock content-head %}
+
+{% block content-body %}
+  <div class="list-group">
+    {% for vaga in object_list %}
+      <a href="{% url 'core:vaga_edit' vaga.pk %}" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between mb-2">
+          <h5 class="mb-1">{{ vaga.cargo }} em {{ vaga.empresa }}</h5>
+          <small>{{ vaga.localidade }}-{{ vaga.uf.sigla }}</small>
+        </div>
+        <p class="mb-1">
+          <span data-feather="dollar-sign"></span> {{ vaga.remuneracao|intcomma }}
+          {% if vaga.vale_transporte %}<span data-feather="plus"></span> vale transporte{% endif %}
+          {% if vaga.vale_refeicao %}<span data-feather="plus"></span> ticket refeição{% endif %}
+        </p>
+        <small>
+          Expediente: {{ vaga.turno }}.
+          Tipo de contrato: {{ vaga.forma_contratacao }}</small>
+      </a>
+    {% endfor %}
+  </div>
+{% endblock content-body %}
