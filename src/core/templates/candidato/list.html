@@ -16,11 +16,27 @@
 
 {% block content-body %}
 <div class="list-group">
+  <form action="">
+    <div class="row mb-3">
+      <div class="col">
+        <div class="input-group">
+          <input type="text" name="search" class="form-control" placeholder="Pesquisar"
+            value="{{ request.GET.search }}" />
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">
+              <span data-feather="search"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
   {% for candidato in object_list %}
   <a href="{% url 'core:candidato_edit' candidato.pk %}" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between mb-2">
       <h5 class="mb-1">{{ candidato }}</h5>
-      <small>Experiência como: {{ candidato.experienciaprofissional_set.all|values_list:'cargo__descricao'|join:', '}}</small>
+      <small>{{ candidato.experienciaprofissional_set.all|values_list:'cargo__descricao'|join:', '}}</small>
     </div>
     <p class="mb-1">
       <span data-feather="phone"></span> {{ candidato.contato.telefone|mask:'phone' }}
@@ -32,5 +48,72 @@
     </small>
   </a>
   {% endfor %}
+
+  <div class="d-flex justify-content-end align-items-center mt-3">
+    <nav>
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1">
+            <span data-feather="chevrons-left"></span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+            <span data-feather="chevron-left"></span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+            {{ page_obj.previous_page_number }}
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link">
+            <span data-feather="chevrons-left"></span>
+          </a>
+        </li>
+        <li class="page-item disabled">
+          <a class="page-link">
+            <span data-feather="chevron-left"></span>
+          </a>
+        </li>
+        {% endif %}
+        <li class="page-item active" aria-current="page">
+          <span class="page-link">{{ page_obj.number }}</span>
+        </li>
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+            {{ page_obj.next_page_number }}
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+            <span data-feather="chevron-right"></span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+            <span data-feather="chevrons-right"></span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link">
+            <span data-feather="chevron-right"></span>
+          </a>
+        </li>
+        <li class="page-item disabled">
+          <a class="page-link">
+            <span data-feather="chevrons-right"></span>
+          </a>
+        </li>
+        {% endif %}
+
+      </ul>
+    </nav>
+  </div>
 </div>
 {% endblock content-body %}

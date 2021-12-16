@@ -1,12 +1,28 @@
-from typing import Any, Dict
+import json
+from functools import reduce
+from operator import or_
+from typing import Any, Dict, List
 
 from core.forms.candidato import CandidatoModelForm
 from core.forms.experiencia import ExperienciaModelForm
-from core.models import Candidato, Contato, Endereco, ExperienciaProfissional
+from core.models import (
+    Candidato,
+    Contato,
+    Endereco,
+    EstadoCivil,
+    ExperienciaProfissional,
+    Genero,
+)
 from django import forms
 from django.contrib.auth.models import User
 from django.db import transaction
-from django.forms.models import inlineformset_factory, model_to_dict
+from django.db.models.query import QuerySet
+from django.db.models.query_utils import Q
+from django.forms.models import (
+    fields_for_model,
+    inlineformset_factory,
+    model_to_dict,
+)
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -16,6 +32,63 @@ from django.views.generic.list import ListView
 class CandidatoListView(ListView):
     model = Candidato
     template_name = 'candidato/list.html'
+    paginate_by = 5
+    ordering = ('user__first_name',)
+
+    def _get_candidato_filters(self):
+        exclude = (
+            'user',
+            'uf_expedicao',
+            'genero',
+            'endereco',
+            'estado_civil',
+            'contato')
+
+        return list(fields_for_model(self.model, exclude=exclude).keys())
+
+    def _get_user_filters(self, name: str = 'user') -> List[str]:
+        return [f'{name}__{f}' for f in ('first_name', 'last_name')]
+
+    def _get_genero_filters(self, name: str = 'genero') -> List[str]:
+        fields = list(fields_for_model(Genero).keys())
+        return [f'{name}__{f}' for f in fields]
+
+    def _get_estado_civil_filters(self, name: str = 'estado_civil') -> List[str]:
+        fields = list(fields_for_model(EstadoCivil).keys())
+        return [f'{name}__{f}' for f in fields]
+
+    def _get_endereco_filters(self, name: str = 'endereco') -> List[str]:
+        fields = list(fields_for_model(Endereco, exclude=('uf')).keys())
+        return [f'{name}__{f}' for f in fields]
+
+    def _get_contato_filters(self, name: str = 'contato') -> List[str]:
+        exclude = ('newsletter_subscriber',)
+        fields = list(fields_for_model(Contato, exclude=exclude).keys())
+        return [f'{name}__{f}' for f in fields]
+
+    def _get_filters(self) -> List[str]:
+        filters = self._get_candidato_filters()
+        filters.extend(self._get_contato_filters())
+        filters.extend(self._get_endereco_filters())
+        filters.extend(self._get_estado_civil_filters())
+        filters.extend(self._get_genero_filters())
+        filters.extend(self._get_user_filters())
+
+        return [f'{f}__icontains' for f in filters]
+
+    def get_queryset(self) -> QuerySet[Candidato]:
+        queryset = super().get_queryset()
+        search = self.request.GET.get('search')
+        filters = self._get_filters()
+
+        if not search:
+            return queryset
+
+        print(json.dumps(filters, sort_keys=True, indent=4))
+        or_joined_filters = reduce(
+            or_, (Q(**{f'{f}': search}) for f in filters))
+
+        return queryset.filter(or_joined_filters)
 
 
 class CandidatoCreateView(CreateView):
